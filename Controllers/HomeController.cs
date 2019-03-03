@@ -10,34 +10,27 @@ namespace SQLApp.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private User user = new User();
+
+        [HttpGet]
+        public object Index()
         {
             return View();
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public IActionResult Login(string machineName, string userName, string password)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            user.MachineName = machineName;
+            user.UserName = userName;
+            user.Password = password;
+            return View("Index");
         }
     }
 }
