@@ -10,12 +10,21 @@ namespace SQLApp.Controllers
 {
     public class HomeController : Controller
     {
-        private User user = new User();
+        private static User user = new User();
 
         [HttpGet]
-        public object Index()
+        public IActionResult Index()
         {
-            return View();
+            if (user.MachineName == "" &&
+                user.UserName == "" &&
+                user.Password == "")
+            {
+                return Redirect("/Home/Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpGet]
@@ -30,7 +39,16 @@ namespace SQLApp.Controllers
             user.MachineName = machineName;
             user.UserName = userName;
             user.Password = password;
-            return View("Index");
+            return Redirect("/Home");
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            user.MachineName = "";
+            user.UserName = "";
+            user.Password = "";
+            return Redirect("/Home");
         }
     }
 }
