@@ -23,6 +23,7 @@ namespace SQLApp.Controllers
             }
             else
             {
+                ViewData["Databases"] = DatabaseHelper.GetDatabaseNames(user.MachineName, user.UserName, user.Password);
                 return View();
             }
         }
