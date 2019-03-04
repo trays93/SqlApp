@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["Title"] = "SQL Lekérdezés írása";
+}
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="/" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>S</b> A</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>SQL</b> App</span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="/Home/Logout">
+                                <i class="fa fa-sign-out"></i>
+                                Kijelentkezés
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- =============================================== -->
+        <!-- Left side column. contains the sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="header">Adatbázisok</li>
+                </ul>
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu" data-widget="tree" id="databaseNames">
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-share"></i> <span>Northwind</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu tableNames">
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-circle-o"></i> Product
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> PruductId</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> PruductName</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> PruductCategory</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-circle-o"></i> Employee
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> EmployeeId</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> EmpLastName</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> EmpFirstName</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- =============================================== -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    SQL
+                    <small>App</small>
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">SQL Lekérdezés eredménye</h3>
+                                <p>@ViewData["Query"]</p>
+                            </div>
+                            <!-- /.box-header -->
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        @foreach (string s in ViewData["Columns"] as List<string>)
+                                        {
+                                            <th>@s</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in ViewData["Rows"] as List<Dictionary<string, string>>)
+                                    {
+                                        <tr>
+                                            @foreach (string s in ViewData["Columns"] as List<string>)
+                                            {
+                                                <td>@d[s]</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 0.1.0
+            </div>
+            <strong>Copyright &copy; 2019 <a href="#">Lovas Bálint</a>.</strong> All rights
+            reserved.
+        </footer>
+
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery 3 -->
+    <script src="/js/jquery.min.js"></script>
+    <!-- jQuery UI 1.12.1 -->
+    <script src="/js/jquery-ui.min.js" type="text/javascript"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="/js/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="/js/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/js/adminlte.min.js"></script>
+    <script src="/js/custom.js"></script>
+</body>

@@ -11,6 +11,8 @@ namespace SQLApp.Controllers
     public class HomeController : Controller
     {
         private static User user = new User();
+        private static List<string> Databases = new List<string>();
+        private static List<Database> DatabaseTree = new List<Database>();
 
         [HttpGet]
         public IActionResult Index()
@@ -23,8 +25,29 @@ namespace SQLApp.Controllers
             }
             else
             {
-                ViewData["Databases"] = DatabaseHelper.GetDatabaseNames(user.MachineName, user.UserName, user.Password);
+                Databases = DatabaseHelper.GetDatabaseNames(user.MachineName, user.UserName, user.Password);
+                ViewData["Databases"] = Databases;
+                //DatabaseTree = DatabaseHelper.MakeDatabaseTree(user);
+                //ViewData["DatabaseTree"] = DatabaseTree;
                 return View();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Index(string sqlQuery, string database)
+        {
+            try
+            {
+                ViewData["Query"] = sqlQuery;
+                ViewData["Columns"] = DatabaseHelper.GetColumnNames(user, sqlQuery, database);
+                ViewData["Rows"] = DatabaseHelper.Query(user, sqlQuery, database);
+                return View("Result");
+            }
+            catch (Exception e)
+            {
+                ViewData["Error"] = e.Message;
+                ViewData["Databases"] = Databases;
+                return View("Index");
             }
         }
 

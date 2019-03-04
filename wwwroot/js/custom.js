@@ -43,7 +43,7 @@ function databaseKeywords() {
 }
 
 function sqlKeywords() {
-  let object = document.getElementById('sqlKeywords2');
+  let object = document.getElementById('sqlKeywords');
   let length = object.childNodes.length;
 
   for (let i = 0; i < length; i++) {

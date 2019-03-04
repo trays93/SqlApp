@@ -39,6 +39,36 @@
                 </ul>
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" data-widget="tree" id="databaseNames">
+                    @*@foreach (Database db in ViewData["DatabaseTree"] as List<Database>)
+                    {
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-share"></i> <span>@db.Name</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu tableNames">
+                                @foreach (Table t in db.Tables)
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-circle-o"></i> @t.Name
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            @foreach (string column in t.ColumnNames)
+                                            {
+                                                <li><a href="#"><i class="fa fa-circle-o"></i> @column</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }*@
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-share"></i> <span>Northwind</span>
@@ -49,15 +79,15 @@
                         <ul class="treeview-menu tableNames">
                             <li class="treeview">
                                 <a href="#">
-                                    <i class="fa fa-circle-o"></i> Product
+                                    <i class="fa fa-circle-o"></i> Products
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> PruductId</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> PruductName</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> PruductCategory</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> ProductID</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> ProductName</a></li>
+                                    <li><a href="#"><i class="fa fa-circle-o"></i> ProductCategory</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">
@@ -104,11 +134,14 @@
                             <!-- form start -->
                             <form action="#" method="post" role="form">
                                 <div class="box-body">
-                                    <!-- <div class="alert alert-danger alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h4><i class="icon fa fa-ban"></i> Hiba!</h4>
-      Exception message.
-    </div> -->
+                                    @if (ViewData["Error"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <h4><i class="icon fa fa-ban"></i> Hiba!</h4>
+                                            @ViewData["Error"]
+                                        </div>
+                                    }
                                     <div class="form-group">
                                         <label>Adatbázisok</label>
                                         <select class="form-control" name="database">
@@ -120,15 +153,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="sqlTextarea">SQL lekérdezés</label>
-                                        <textarea class="form-control" rows="10" placeholder="Írd " id="sqlTextarea"></textarea>
+                                        <textarea class="form-control" rows="10" name="sqlQuery" id="sqlTextarea"></textarea>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
 
                                 <div class="box-footer">
                                     <button type="submit" class="btn btn-primary">Futtat</button>
-                                    <button type="submit" class="btn btn-default">Mentés</button>
-                                    <button type="submit" class="btn btn-default">Betöltés</button>
+                                    <button type="submit" class="btn btn-default" disabled>Mentés</button>
+                                    <button type="submit" class="btn btn-default" disabled>Betöltés</button>
                                 </div>
                             </form>
 
@@ -137,29 +170,42 @@
 
                     <div class="col-md-4">
                         <div class="box box-primary">
-                            <!-- form start -->
-                            <form role="form">
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label>SQL Kulcsszavak</label>
-                                        <ul id="sqlKeywords">
-                                            <li>SELECT</li>
-                                            <li>FROM</li>
-                                            <li>DISTINCT</li>
-                                            <li>GROUP BY</li>
-                                            <li>ORDER BY</li>
-                                            <li>*</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- /.box-body -->
-                            </form>
-                            <div class="container-fluid" id="sqlKeywords2">
-                                <label type="button" class="btn btn-primary">SELECT</label>
-                                <label type="button" class="btn btn-primary">FROM</label>
+                            <div class="box-header with-border">
+                                <h3 class="box-title">SQL Kulcsszavak</h3>
+                            </div>
+                            <div class="container-fluid" id="sqlKeywords">
+                                <label type="button" class="btn btn-primary">ALL</label>
+                                <label type="button" class="btn btn-primary">AND</label>
+                                <label type="button" class="btn btn-primary">AS</label>
+                                <label type="button" class="btn btn-primary">ASC</label>
+                                <label type="button" class="btn btn-primary">BETWEEN</label>
+                                <label type="button" class="btn btn-primary">DELETE</label>
+                                <label type="button" class="btn btn-primary">DESC</label>
                                 <label type="button" class="btn btn-primary">DISTINCT</label>
+                                <label type="button" class="btn btn-primary">EXEC</label>
+                                <label type="button" class="btn btn-primary">EXISTS</label>
+                                <label type="button" class="btn btn-primary">FROM</label>
                                 <label type="button" class="btn btn-primary">GROUP BY</label>
+                                <label type="button" class="btn btn-primary">HAVING</label>
+                                <label type="button" class="btn btn-primary">IN</label>
+                                <label type="button" class="btn btn-primary">INNER JOIN</label>
+                                <label type="button" class="btn btn-primary">INSERT INTO</label>
+                                <label type="button" class="btn btn-primary">IS NULL</label>
+                                <label type="button" class="btn btn-primary">IS NOT NULL</label>
+                                <label type="button" class="btn btn-primary">JOIN</label>
+                                <label type="button" class="btn btn-primary">LEFT JOIN</label>
+                                <label type="button" class="btn btn-primary">LIKE</label>
+                                <label type="button" class="btn btn-primary">NOT</label>
+                                <label type="button" class="btn btn-primary">NOT NULL</label>
+                                <label type="button" class="btn btn-primary">OR</label>
                                 <label type="button" class="btn btn-primary">ORDER BY</label>
+                                <label type="button" class="btn btn-primary">OUTER JOIN</label>
+                                <label type="button" class="btn btn-primary">RIGTH JOIN</label>
+                                <label type="button" class="btn btn-primary">SELECT</label>
+                                <label type="button" class="btn btn-primary">SELECT TOP</label>
+                                <label type="button" class="btn btn-primary">UNION</label>
+                                <label type="button" class="btn btn-primary">VALUES</label>
+                                <label type="button" class="btn btn-primary">WHERE</label>
                                 <label type="button" class="btn btn-primary">*</label>
                             </div>
                         </div>
@@ -197,4 +243,3 @@
     <script src="/js/adminlte.min.js"></script>
     <script src="/js/custom.js"></script>
 </body>
-
