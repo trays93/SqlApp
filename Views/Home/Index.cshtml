@@ -30,87 +30,6 @@
         </header>
 
         <!-- =============================================== -->
-        <!-- Left side column. contains the sidebar -->
-        <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">
-                <ul class="sidebar-menu">
-                    <li class="header">Adatbázisok</li>
-                </ul>
-                <!-- sidebar menu: : style can be found in sidebar.less -->
-                <ul class="sidebar-menu" data-widget="tree" id="databaseNames">
-                    @*@foreach (Database db in ViewData["DatabaseTree"] as List<Database>)
-                    {
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-share"></i> <span>@db.Name</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu tableNames">
-                                @foreach (Table t in db.Tables)
-                                {
-                                    <li class="treeview">
-                                        <a href="#">
-                                            <i class="fa fa-circle-o"></i> @t.Name
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
-                                        </a>
-                                        <ul class="treeview-menu">
-                                            @foreach (string column in t.ColumnNames)
-                                            {
-                                                <li><a href="#"><i class="fa fa-circle-o"></i> @column</a></li>
-                                            }
-                                        </ul>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
-                    }*@
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-share"></i> <span>Northwind</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu tableNames">
-                            <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-circle-o"></i> Products
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> ProductID</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> ProductName</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> ProductCategory</a></li>
-                                </ul>
-                            </li>
-                            <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-circle-o"></i> Employee
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> EmployeeId</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> EmpLastName</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> EmpFirstName</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </section>
-            <!-- /.sidebar -->
-        </aside>
-
-        <!-- =============================================== -->
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -143,24 +62,47 @@
                                         </div>
                                     }
                                     <div class="form-group">
-                                        <label>Adatbázisok</label>
-                                        <select class="form-control" name="database">
-                                            @foreach (string s in ViewData["Databases"] as List<string>)
-                                            {
-                                                <option value="@s">@s</option>
-                                            }
-                                        </select>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label>Adatbázisok</label>
+                                                <select multiple class="form-control" name="database" id="databases">
+                                                    @foreach (string s in ViewData["Databases"] as List<string>)
+                                                    {
+                                                        <option value="@s">@s</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Táblák</label>
+                                                <select multiple disabled class="form-control" name="tables" id="tables"></select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Oszlopok</label>
+                                                <select multiple disabled class="form-control" name="columns" id="columns">
+                                                    @foreach (string s in ViewData["Databases"] as List<string>)
+                                                    {
+                                                        <option value="@s">@s</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="sqlTextarea">SQL lekérdezés</label>
                                         <textarea class="form-control" rows="10" name="sqlQuery" id="sqlTextarea"></textarea>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" name="fileName" class="form-control">
+                                        <div class="input-group-btn">
+                                            <button type="submit" formaction="/Home/Save" class="btn btn-primary">Mentés</button>
+                                        </div>
+                                        <!-- /btn-group -->
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
 
                                 <div class="box-footer">
                                     <button type="submit" class="btn btn-primary">Futtat</button>
-                                    <button type="submit" class="btn btn-default" disabled>Mentés</button>
                                     <button type="submit" class="btn btn-default" disabled>Betöltés</button>
                                 </div>
                             </form>

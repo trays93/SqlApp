@@ -74,5 +74,11 @@ namespace SQLApp.Controllers
             user.Password = "";
             return Redirect("/Home");
         }
+
+        [HttpPost]
+        public string Save(string sqlQuery, string fileName)
+        {
+            return $"SQL: {sqlQuery}, <br>Fájlnév: {fileName}";
+        }
     }
 }

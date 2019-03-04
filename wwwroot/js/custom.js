@@ -1,46 +1,40 @@
 $(function() {
-  $('.sidebar-menu').tree();
+    $('.sidebar-menu').tree();
 
-  databaseKeywords();
-  sqlKeywords();
-  sqlTextarea();
+    document.getElementById("databases").addEventListener("change", function() {
+        let x = document.getElementById("databases").value;
+        let tablesList = ["Categories", "Customers", "Employees", "Orders", "Products"];
+        let tables = document.getElementById("tables");
+
+        while (tables.hasChildNodes()) {
+            tables.removeChild(tables.firstChild);
+        }
+
+        for (let i = 0; i < tablesList.length; i++) {
+            console.log(tablesList[i]);
+            let element = document.createElement("option");
+            element.value = tablesList[i];
+            let text = document.createTextNode(tablesList[i]);
+            element.appendChild(text);
+            tables.appendChild(element);
+        }
+        tables.removeAttribute("disabled");
+
+    });
+
+    document.getElementById("columns").addEventListener("dblclick", function () {
+        let x = document.getElementById("columns").value;
+        alert(x);
+    });
+
+    sqlKeywords();
+    sqlTextarea();
+
 
 });
 
 
 let dragObject;
-
-function databaseKeywords() {
-  let object = document.getElementById('databaseNames');
-  let length = object.childNodes.length;
-
-  for (let i = 0; i < length; i++) {
-    object.childNodes[i].draggable = true;
-    object.childNodes[i].addEventListener("dragstart", function(ev) {
-      let text = ev.target.textContent;
-      text = text.trim();
-      dragObject = "[" + text + "]";
-      console.log(dragObject);
-    });
-  }
-
-  object = document.getElementsByClassName('tableNames');
-  length = object.length;
-
-  for (let i = 0; i < length; i++) {
-    let childNodesLength = object[i];
-    for (let j = 0; j < childNodesLength; j++) {
-      object[i].childNodes[j].draggable = true;
-      object[i].childNodes[j].addEventListener("dragstart", function(ev) {
-        let text = ev.target.textContent;
-        text = text.trim();
-        dragObject = "[" + text + "]" + ", ";
-        console.log(dragObject);
-      });
-    }
-  }
-
-}
 
 function sqlKeywords() {
   let object = document.getElementById('sqlKeywords');
