@@ -80,5 +80,12 @@ namespace SQLApp.Controllers
         {
             return $"SQL: {sqlQuery}, <br>Fájlnév: {fileName}";
         }
+
+        [HttpPost]
+        public IActionResult GetTables(string databaseName)
+        {
+            List<string> tables = DatabaseHelper.GetTables(user, databaseName);
+            return new JsonResult(tables);
+        }
     }
 }

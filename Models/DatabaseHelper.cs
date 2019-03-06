@@ -126,7 +126,7 @@ namespace SQLApp.Models
 
         //    SqlCommand command = new SqlCommand("EXEC sp_helpdb", sqlConnection);
         //    SqlDataReader reader = command.ExecuteReader();
-            
+
         //    while (reader.Read())
         //    {
         //        string dbName = reader.GetString(0);
@@ -138,42 +138,26 @@ namespace SQLApp.Models
         //    return databases;
         //}
 
-        //private static List<Table> GetTableNames(User user, string databaseName)
-        //{
-        //    List<Table> tables = new List<Table>();
+        public static List<string> GetTables(User user, string databaseName)
+        {
+            List<string> tables = new List<string>();
 
-        //    string connectionString = $"Server={user.MachineName};Database={databaseName};User Id={user.UserName};Password={user.Password};";
-        //    SqlConnection connection = new SqlConnection(connectionString);
-        //    connection.Open();
-        //    SqlCommand command = new SqlCommand($"SELECT TABLE_NAME FROM {databaseName}.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_NAME ASC;", connection);
-        //    SqlDataReader reader = command.ExecuteReader();
-            
-        //    while (reader.Read())
-        //    {
-        //        string tableName = reader.GetString(0);
-        //        tables.Add(new Table() { Name = tableName, ColumnNames = GetColumns(connection, user, databaseName, tableName) });
-        //    }
-        //    reader.Close();
-        //    connection.Close();
+            string connectionString = $"Server={user.MachineName};Database={databaseName};User Id={user.UserName};Password={user.Password};";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand($"SELECT Name from Sysobjects where xtype = 'u'", connection);
+            SqlDataReader reader = command.ExecuteReader();
 
-        //    return tables;
-        //}
+            while (reader.Read())
+            {
+                string tableName = reader.GetString(0);
+                tables.Add(tableName);
+            }
+            reader.Close();
+            connection.Close();
 
-        //private static List<string> GetColumns(SqlConnection connection, User user, string databaseName, string tableName)
-        //{
-        //    List<string> columns = new List<string>();
-            
-        //    SqlCommand command = new SqlCommand($"SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('{tableName}') ORDER BY name ASC;", connection);
-        //    SqlDataReader reader = command.ExecuteReader();
-        //    while (reader.Read())
-        //    {
-        //        string columnName = reader.GetString(0);
-        //        columns.Add(columnName);
-        //    }
-        //    reader.Close();
-
-        //    return columns;
-        //}
+            return tables;
+        }
     }
 
     public class Database
