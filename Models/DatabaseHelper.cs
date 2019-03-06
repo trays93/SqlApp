@@ -15,21 +15,6 @@ namespace SQLApp.Models
             string connectionString = $"Server={machineName};Database=master;User Id={userName};Password={password};";
             List<string> databases = new List<string>();
 
-            //using (sqlConnection = new SqlConnection(connectionString))
-            //{
-            //    using (SqlCommand command = new SqlCommand("EXEC sp_helpdb", sqlConnection))
-            //    {
-            //        using (SqlDataReader reader = command.ExecuteReader())
-            //        {
-            //            databases = new List<string>();
-            //            while (reader.Read())
-            //            {
-            //                string databaseName = reader.GetString(0);
-            //                databases.Add(databaseName);
-            //            }
-            //        }
-            //    }
-            //}
             try
             {
                 sqlConnection = new SqlConnection(connectionString);
@@ -53,35 +38,6 @@ namespace SQLApp.Models
             }
 
             return databases;
-        }
-
-        public static List<string> GetColumnNames(User user, string sqlQuery, string database)
-        {
-            List<string> columnNames = new List<string>();
-            string connectionString = $"Server={user.MachineName};Database={database};User Id={user.UserName};Password={user.Password};";
-
-            try
-            {
-                sqlConnection = new SqlConnection(connectionString);
-                sqlConnection.Open();
-
-                SqlCommand command = new SqlCommand(sqlQuery, sqlConnection);
-                SqlDataReader reader = command.ExecuteReader();
-                int fieldCount = reader.FieldCount;
-                for (int i = 0; i < fieldCount; i++)
-                {
-                    columnNames.Add(reader.GetName(i));
-                }
-                reader.Close();
-
-                sqlConnection.Close();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return columnNames;
         }
 
         public static List<Dictionary<string, string>> Query(User user, string sqlQuery, string database)
@@ -120,24 +76,6 @@ namespace SQLApp.Models
             return data;
         }
 
-        //public static List<Database> MakeDatabaseTree(User user)
-        //{
-        //    List<Database> databases = new List<Database>();
-
-        //    SqlCommand command = new SqlCommand("EXEC sp_helpdb", sqlConnection);
-        //    SqlDataReader reader = command.ExecuteReader();
-
-        //    while (reader.Read())
-        //    {
-        //        string dbName = reader.GetString(0);
-        //        List<Table> tables = GetTableNames(user, dbName);
-        //        databases.Add(new Database() { Name = dbName, Tables = GetTableNames(user, dbName)});
-        //    }
-        //    reader.Close();
-
-        //    return databases;
-        //}
-
         public static List<string> GetTables(User user, string databaseName)
         {
             List<string> tables = new List<string>();
@@ -158,17 +96,56 @@ namespace SQLApp.Models
 
             return tables;
         }
-    }
 
-    public class Database
-    {
-        public string Name { get; set; }
-        public List<Table> Tables { get; set; }
-    }
+        public static List<string> GetColumns(User user, string databaseName, string tableName)
+        {
+            List<string> columns = new List<string>();
 
-    public class Table
-    {
-        public string Name { get; set; }
-        public List<string> ColumnNames { get; set; }
+            string connectionString = $"Server={user.MachineName};Database={databaseName};User Id={user.UserName};Password={user.Password};";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'", connection);
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string columnName = reader.GetString(0);
+                columns.Add(columnName);
+            }
+            reader.Close();
+            connection.Close();
+
+            return columns;
+        }
+
+        public static List<string> GetColumnNames(User user, string sqlQuery, string database)
+        {
+            List<string> columnNames = new List<string>();
+            string connectionString = $"Server={user.MachineName};Database={database};User Id={user.UserName};Password={user.Password}";
+
+            try
+            {
+                sqlConnection = new SqlConnection(connectionString);
+                sqlConnection.Open();
+
+                SqlCommand command = new SqlCommand(sqlQuery, sqlConnection);
+                SqlDataReader reader = command.ExecuteReader();
+                int fieldCount = reader.FieldCount;
+                for (int i = 0; i < fieldCount; i++)
+                {
+                    columnNames.Add(reader.GetName(i));
+                }
+                reader.Close();
+
+                sqlConnection.Close();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
+            return columnNames;
+        }
     }
 }

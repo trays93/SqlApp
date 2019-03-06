@@ -74,16 +74,11 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Táblák</label>
-                                                <select multiple disabled class="form-control" name="tables" id="tables"></select>
+                                                <select multiple disabled class="form-control" id="tables"></select>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Oszlopok</label>
-                                                <select multiple disabled class="form-control" name="columns" id="columns">
-                                                    @foreach (string s in ViewData["Databases"] as List<string>)
-                                                    {
-                                                        <option value="@s">@s</option>
-                                                    }
-                                                </select>
+                                                <select multiple disabled class="form-control" id="columns"></select>
                                             </div>
                                         </div>
                                     </div>

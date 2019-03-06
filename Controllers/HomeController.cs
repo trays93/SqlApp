@@ -12,7 +12,6 @@ namespace SQLApp.Controllers
     {
         private static User user = new User();
         private static List<string> Databases = new List<string>();
-        private static List<Database> DatabaseTree = new List<Database>();
 
         [HttpGet]
         public IActionResult Index()
@@ -27,20 +26,18 @@ namespace SQLApp.Controllers
             {
                 Databases = DatabaseHelper.GetDatabaseNames(user.MachineName, user.UserName, user.Password);
                 ViewData["Databases"] = Databases;
-                //DatabaseTree = DatabaseHelper.MakeDatabaseTree(user);
-                //ViewData["DatabaseTree"] = DatabaseTree;
                 return View();
             }
         }
 
         [HttpPost]
-        public IActionResult Index(string sqlQuery, string database)
+        public IActionResult Index(string sqlQuery, string databaseName)
         {
             try
             {
                 ViewData["Query"] = sqlQuery;
-                ViewData["Columns"] = DatabaseHelper.GetColumnNames(user, sqlQuery, database);
-                ViewData["Rows"] = DatabaseHelper.Query(user, sqlQuery, database);
+                ViewData["Columns"] = DatabaseHelper.GetColumnNames(user, sqlQuery, databaseName);
+                ViewData["Rows"] = DatabaseHelper.Query(user, sqlQuery, databaseName);
                 return View("Result");
             }
             catch (Exception e)
@@ -86,6 +83,13 @@ namespace SQLApp.Controllers
         {
             List<string> tables = DatabaseHelper.GetTables(user, databaseName);
             return new JsonResult(tables);
+        }
+
+        [HttpPost]
+        public IActionResult GetColumns(string databaseName, string tableName)
+        {
+            List<string> columns = DatabaseHelper.GetColumns(user, databaseName, tableName);
+            return new JsonResult(columns);
         }
     }
 }

@@ -1,14 +1,35 @@
 $(function() {
 
-    document.getElementById("databases").addEventListener("change", function() {
-        let databaseName = document.getElementById("databases").value;
-        let tablesList = ["Categories", "Customers", "Employees", "Orders", "Products"];
-        let tables = document.getElementById("tables");
+    addEventsForDatabaseList();
+    addEventsForTableList();
+    addEventsForColumnList();
+    sqlKeywords();
+    sqlTextarea();
 
-        console.log(databaseName);
+
+});
+
+
+let dragObject;
+
+function addEventsForDatabaseList() {
+    document.getElementById("databases").addEventListener("dblclick", function () {
+        let x = document.getElementById("databases").value;
+        let sqlTextBox = document.getElementById("sqlTextarea");
+        sqlTextBox.textContent += x;
+    });
+
+    document.getElementById("databases").addEventListener("change", function () {
+        let databaseName = document.getElementById("databases").value;
+        let tables = document.getElementById("tables");
 
         while (tables.hasChildNodes()) {
             tables.removeChild(tables.firstChild);
+        }
+
+        let columns = document.getElementById("columns");
+        while (columns.hasChildNodes()) {
+            columns.removeChild(columns.firstChild);
         }
 
         $.ajax({
@@ -18,9 +39,7 @@ $(function() {
                 "databaseName": databaseName
             },
             success: function (result) {
-                console.log(databaseName);
                 for (let i = 0; i < result.length; i++) {
-                    console.log(result[i]);
                     let element = document.createElement("option");
                     element.value = result[i];
                     let text = document.createTextNode(result[i]);
@@ -31,30 +50,53 @@ $(function() {
             }
         });
 
-        //$.post("Home/GetTables", x, function (data, status) {
-        //    console.log(status);
-        //    for (let i = 0; i < data.length; i++) {
-        //        console.log(data[i]);
-        //    }
-        //});
+    });
+}
 
+function addEventsForTableList() {
+    document.getElementById("tables").addEventListener("dblclick", function () {
+        let x = document.getElementById("tables").value;
+        let sqlTextBox = document.getElementById("sqlTextarea");
+        sqlTextBox.textContent += x;
     });
 
+    document.getElementById("tables").addEventListener("change", function () {
+        let databaseName = document.getElementById("databases").value;
+        let tableName = document.getElementById("tables").value;
+        let columns = document.getElementById("columns");
+
+        while (columns.hasChildNodes()) {
+            columns.removeChild(columns.firstChild);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetColumns",
+            data: {
+                "databaseName": databaseName,
+                "tableName": tableName
+            },
+            success: function (result) {
+                for (let i = 0; i < result.length; i++) {
+                    let element = document.createElement("option");
+                    element.value = result[i];
+                    let text = document.createTextNode(result[i]);
+                    element.appendChild(text);
+                    columns.appendChild(element);
+                }
+                columns.removeAttribute("disabled");
+            }
+        });
+    });
+}
+
+function addEventsForColumnList() {
     document.getElementById("columns").addEventListener("dblclick", function () {
         let x = document.getElementById("columns").value;
-        //alert(x);
         let sqlTextBox = document.getElementById("sqlTextarea");
-        sqlTextBox.textContent = x;
+        sqlTextBox.textContent += x;
     });
-
-    sqlKeywords();
-    sqlTextarea();
-
-
-});
-
-
-let dragObject;
+}
 
 function sqlKeywords() {
   let object = document.getElementById('sqlKeywords');
