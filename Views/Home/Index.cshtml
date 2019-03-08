@@ -35,8 +35,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    SQL
-                    <small>App</small>
+                    SQL Lekérdezések Szerkesztése
                 </h1>
             </section>
 
@@ -47,20 +46,13 @@
                     <div class="col-md-8">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">SQL Lekérdezés</h3>
+                                <h3 class="box-title">Adatbázis Szerver: ...</h3>
                             </div>
                             <!-- /.box-header -->
                             <!-- form start -->
                             <form method="post" role="form">
                                 <div class="box-body">
-                                    @if (ViewData["Error"] != null)
-                                    {
-                                        <div class="alert alert-danger alert-dismissible">
-                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                            <h4><i class="icon fa fa-ban"></i> Hiba!</h4>
-                                            @ViewData["Error"]
-                                        </div>
-                                    }
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -86,7 +78,29 @@
                                         <label for="sqlTextarea">SQL lekérdezés</label>
                                         <textarea class="form-control" rows="10" name="sqlQuery" id="sqlTextarea"></textarea>
                                     </div>
-                                    <div class="input-group">
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-primary" value="Futtat">
+                                    </div>
+                                    @if (ViewData["Error"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <h4><i class="icon fa fa-ban"></i> Hiba!</h4>
+                                            @ViewData["Error"]
+                                        </div>
+                                    }
+                                    
+                                </div>
+                                <!-- /.box-body -->
+
+                                <div class="box-footer">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">SQL Fájl betöltése</label>
+                                        <input type="file" name="sqlFile" id="sqlFile" accept=".sql">
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">SQL Mentése Fájlba</label>
                                         <input type="text" name="fileName" class="form-control">
                                         <div class="input-group-btn">
                                             <button type="submit" formaction="/Home/Save" class="btn btn-primary">Mentés</button>
@@ -94,29 +108,38 @@
                                         <!-- /btn-group -->
                                     </div>
                                 </div>
-                                <!-- /.box-body -->
-
-                                <div class="box-footer">
-                                    <input type="submit" class="btn btn-primary" value="Futtat">
-                                    <!-- <button type="submit" class="btn btn-default" disabled>Betöltés</button> -->
-                                </div>
                             </form>
 
                         </div>
                     </div>
-
+                    <!-- 
+                        TODO: SQL kifejezések (select, select top, delete, insert, insert into),
+                        SQL kulcsszavak 
+                        
+                        -->
                     <div class="col-md-4">
                         <div class="box box-primary">
                             <div class="box-header with-border">
                                 <h3 class="box-title">SQL Kulcsszavak</h3>
                             </div>
                             <div class="container-fluid" id="sqlKeywords">
+                                <label type="button" class="btn btn-primary">SELECT column FROM table_name</label>
+                                <label type="button" class="btn btn-primary">SELECT TOP(1000) column FROM table_name</label>
+                                <label type="button" class="btn btn-primary">
+                                    INSERT INTO table_name (column)
+                                    VALUES (value)
+                                </label>
+                                <label type="button" class="btn btn-primary">
+                                    UPDATE table_name
+                                    SET column = value
+                                </label>
+
+                                <label type="button" class="btn btn-primary">DELETE FROM table_name</label>
                                 <label type="button" class="btn btn-primary">ALL</label>
                                 <label type="button" class="btn btn-primary">AND</label>
                                 <label type="button" class="btn btn-primary">AS</label>
                                 <label type="button" class="btn btn-primary">ASC</label>
                                 <label type="button" class="btn btn-primary">BETWEEN</label>
-                                <label type="button" class="btn btn-primary">DELETE</label>
                                 <label type="button" class="btn btn-primary">DESC</label>
                                 <label type="button" class="btn btn-primary">DISTINCT</label>
                                 <label type="button" class="btn btn-primary">EXEC</label>
@@ -126,7 +149,7 @@
                                 <label type="button" class="btn btn-primary">HAVING</label>
                                 <label type="button" class="btn btn-primary">IN</label>
                                 <label type="button" class="btn btn-primary">INNER JOIN</label>
-                                <label type="button" class="btn btn-primary">INSERT INTO</label>
+
                                 <label type="button" class="btn btn-primary">IS NULL</label>
                                 <label type="button" class="btn btn-primary">IS NOT NULL</label>
                                 <label type="button" class="btn btn-primary">JOIN</label>
@@ -138,8 +161,6 @@
                                 <label type="button" class="btn btn-primary">ORDER BY</label>
                                 <label type="button" class="btn btn-primary">OUTER JOIN</label>
                                 <label type="button" class="btn btn-primary">RIGTH JOIN</label>
-                                <label type="button" class="btn btn-primary">SELECT</label>
-                                <label type="button" class="btn btn-primary">SELECT TOP</label>
                                 <label type="button" class="btn btn-primary">UNION</label>
                                 <label type="button" class="btn btn-primary">VALUES</label>
                                 <label type="button" class="btn btn-primary">WHERE</label>

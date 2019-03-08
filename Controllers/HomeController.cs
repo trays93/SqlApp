@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SQLApp.Models;
 
@@ -73,9 +76,39 @@ namespace SQLApp.Controllers
         }
 
         [HttpPost]
-        public string Save(string sqlQuery, string fileName)
+        public FileResult Save(string sqlQuery, string fileName)
         {
-            return $"SQL: {sqlQuery}, <br>Fájlnév: {fileName}";
+            if (!fileName.EndsWith(".sql"))
+            {
+                fileName += ".sql";
+            }
+            StreamWriter sw = null;
+            using (sw = new StreamWriter(@".\wwwroot\download\" + fileName, false, Encoding.UTF8))
+            {
+                sw.Write(sqlQuery);
+            }
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(@".\wwwroot\download\" + fileName);
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        [HttpPost]
+        public string Upload(IFormFile sqlFile)
+        {
+            string line = "";
+            string fileName = sqlFile.FileName;
+            Stream s = sqlFile.OpenReadStream();
+            string content = "";
+            StreamReader sr = null;
+            using (sr = new StreamReader(s, Encoding.UTF8))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    content += line + "\n";
+                }
+            }
+
+            return $"{content}";
         }
 
         [HttpPost]

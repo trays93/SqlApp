@@ -1,2 +1,4 @@
 ﻿/bin
 /obj
+/wwwroot/download/*
+/wwwroot/upload/*

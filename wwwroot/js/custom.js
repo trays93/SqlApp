@@ -6,6 +6,23 @@ $(function() {
     sqlKeywords();
     sqlTextarea();
 
+    document.getElementById("sqlFile").addEventListener("change", function () {
+        let formData = new FormData();
+        formData.append('sqlFile', $('#sqlFile')[0].files[0]);
+        let _url = '@Url.Action("Upload", "HomeController")';
+        $.ajax({
+            type: 'POST',
+            url: '/Home/Upload',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+                console.log(result);
+                let textarea = document.getElementById("sqlTextarea");
+                textarea.value = result;
+            }
+        });
+    });
 
 });
 
@@ -16,7 +33,7 @@ function addEventsForDatabaseList() {
     document.getElementById("databases").addEventListener("dblclick", function () {
         let x = document.getElementById("databases").value;
         let sqlTextBox = document.getElementById("sqlTextarea");
-        sqlTextBox.textContent += x;
+        sqlTextBox.value += "[" + x + "] ";
     });
 
     document.getElementById("databases").addEventListener("change", function () {
@@ -57,7 +74,7 @@ function addEventsForTableList() {
     document.getElementById("tables").addEventListener("dblclick", function () {
         let x = document.getElementById("tables").value;
         let sqlTextBox = document.getElementById("sqlTextarea");
-        sqlTextBox.textContent += x;
+        sqlTextBox.value += "[" + x + "] ";
     });
 
     document.getElementById("tables").addEventListener("change", function () {
@@ -94,7 +111,7 @@ function addEventsForColumnList() {
     document.getElementById("columns").addEventListener("dblclick", function () {
         let x = document.getElementById("columns").value;
         let sqlTextBox = document.getElementById("sqlTextarea");
-        sqlTextBox.textContent += x;
+        sqlTextBox.value += "[" + x + "] ";
     });
 }
 
@@ -105,9 +122,16 @@ function sqlKeywords() {
   for (let i = 0; i < length; i++) {
     object.childNodes[i].draggable = true;
     object.childNodes[i].addEventListener("dragstart", function(ev) {
-      dragObject = ev.target.textContent;
+        dragObject = ev.target.textContent + " ";
       console.log(ev.target.textContent);
     });
+
+      object.childNodes[i].addEventListener("click", function (ev) {
+          let sqlTextarea = document.getElementById("sqlTextarea");
+          let text = sqlTextarea.textContent;
+          text += ev.target.textContent + " ";
+          sqlTextarea.value += text;
+      });
   }
 }
 
@@ -118,7 +142,7 @@ function sqlTextarea() {
     ev.preventDefault();
     let text = object.textContent;
     text += dragObject + " ";
-    object.textContent = text;
+      object.value = text;
   });
 
   object.addEventListener("dragover", function(ev) {
