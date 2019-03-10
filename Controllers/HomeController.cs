@@ -27,9 +27,18 @@ namespace SQLApp.Controllers
             }
             else
             {
-                Databases = DatabaseHelper.GetDatabaseNames(user.MachineName, user.UserName, user.Password);
-                ViewData["Databases"] = Databases;
-                return View();
+                try
+                {
+                    Databases = DatabaseHelper.GetDatabaseNames(user.MachineName, user.UserName, user.Password);
+                    ViewData["Databases"] = Databases;
+                    ViewData["DatabaseName"] = user.MachineName;
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    TempData["Error"] = e.Message;
+                    return Redirect("/Home/Login");
+                }
             }
         }
 
@@ -39,12 +48,14 @@ namespace SQLApp.Controllers
             try
             {
                 ViewData["Query"] = sqlQuery;
+                ViewData["DatabaseName"] = user.MachineName;
                 ViewData["Columns"] = DatabaseHelper.GetColumnNames(user, sqlQuery, databaseName);
                 ViewData["Rows"] = DatabaseHelper.Query(user, sqlQuery, databaseName);
                 return View("Result");
             }
             catch (Exception e)
             {
+                ViewData["DatabaseName"] = user.MachineName;
                 ViewData["Error"] = e.Message;
                 ViewData["Databases"] = Databases;
                 return View("Index");

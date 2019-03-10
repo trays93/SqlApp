@@ -142,7 +142,7 @@ function sqlTextarea() {
     ev.preventDefault();
     let text = object.textContent;
     text += dragObject + " ";
-      object.value = text;
+    object.value += text;
   });
 
   object.addEventListener("dragover", function(ev) {

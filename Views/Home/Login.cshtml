@@ -1,31 +1,39 @@
 ﻿@{
-    ViewData["Title"] = "Bejelentkezés";
+    ViewData["Title"] = "Kapcsolódás Adatbázishoz";
 }
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/"><i class="fa fa-database"></i> Connect to Database</a>
+            <a href="/"><i class="fa fa-database"></i> Kapcsolódás Adatbázishoz</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Connect</p>
+            <p class="login-box-msg">Kapcsolódási Adatok</p>
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Hiba!</h4>
+                    @TempData["Error"]
+                </div>
+            }
             <form action="/Home/Login" method="post">
                 <div class="form-group has-feedback">
-                    <input type="text" name="machineName" class="form-control" placeholder="SQL Server Name">
+                    <input type="text" name="machineName" class="form-control" placeholder="SQL Szerver Név">
                     <span class="fa fa-server form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" name="userName" class="form-control" placeholder="Username">
+                    <input type="text" name="userName" class="form-control" placeholder="Felhasználónév">
                     <span class="fa fa-user form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <input type="password" name="password" class="form-control" placeholder="Jelszó">
                     <span class="fa fa-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
                     <!-- /.col -->
                     <div class="col-xs-12">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Connect</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Kapcsolódás</button>
                     </div>
                     <!-- /.col -->
                 </div>

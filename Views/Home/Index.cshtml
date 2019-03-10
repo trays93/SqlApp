@@ -10,9 +10,9 @@
             <!-- Logo -->
             <a href="/" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>S</b> A</span>
+                <span class="logo-mini">SQL Szerkesztő</span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>SQL</b> App</span>
+                <span class="logo-lg"><b>SQL</b> Szerkesztő</span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
@@ -21,7 +21,7 @@
                         <li>
                             <a href="/Home/Logout">
                                 <i class="fa fa-sign-out"></i>
-                                Kijelentkezés
+                                Kilépés
                             </a>
                         </li>
                     </ul>
@@ -46,7 +46,7 @@
                     <div class="col-md-8">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Adatbázis Szerver: ...</h3>
+                                <h3 class="box-title">Adatbázis Szerver: @ViewData["DatabaseName"]</h3>
                             </div>
                             <!-- /.box-header -->
                             <!-- form start -->
@@ -96,7 +96,7 @@
                                 <div class="box-footer">
                                     <div class="form-group">
                                         <label for="exampleInputFile">SQL Fájl betöltése</label>
-                                        <input type="file" name="sqlFile" id="sqlFile" accept=".sql">
+                                        <input type="file" class="btn btn-primary" name="sqlFile" id="sqlFile" accept=".sql">
                                     </div>
                                     <hr />
                                     <div class="form-group">
@@ -112,59 +112,67 @@
 
                         </div>
                     </div>
-                    <!-- 
-                        TODO: SQL kifejezések (select, select top, delete, insert, insert into),
-                        SQL kulcsszavak 
-                        
-                        -->
+
                     <div class="col-md-4">
-                        <div class="box box-primary">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">SQL Kulcsszavak</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">SQL kifejezések</h3>
+                                    </div>
+                                    <div class="container-fluid" id="sqlExpressions">
+                                        <label type="button" class="btn btn-primary">SELECT column FROM table_name</label>
+                                        <label type="button" class="btn btn-primary">SELECT TOP(1000) column FROM table_name</label>
+                                        <label type="button" class="btn btn-primary">
+                                            INSERT INTO table_name (column)
+                                            VALUES (value)
+                                        </label>
+                                        <label type="button" class="btn btn-primary">
+                                            UPDATE table_name
+                                            SET column = value
+                                        </label>
+                                        <label type="button" class="btn btn-primary">DELETE FROM table_name</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="container-fluid" id="sqlKeywords">
-                                <label type="button" class="btn btn-primary">SELECT column FROM table_name</label>
-                                <label type="button" class="btn btn-primary">SELECT TOP(1000) column FROM table_name</label>
-                                <label type="button" class="btn btn-primary">
-                                    INSERT INTO table_name (column)
-                                    VALUES (value)
-                                </label>
-                                <label type="button" class="btn btn-primary">
-                                    UPDATE table_name
-                                    SET column = value
-                                </label>
+                            <div class="col-md-12">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">SQL Kulcsszavak</h3>
+                                    </div>
+                                    <div class="container-fluid" id="sqlKeywords">
+                                        <label type="button" class="btn btn-primary">ALL</label>
+                                        <label type="button" class="btn btn-primary">AND</label>
+                                        <label type="button" class="btn btn-primary">AS</label>
+                                        <label type="button" class="btn btn-primary">ASC</label>
+                                        <label type="button" class="btn btn-primary">BETWEEN</label>
+                                        <label type="button" class="btn btn-primary">DESC</label>
+                                        <label type="button" class="btn btn-primary">DISTINCT</label>
+                                        <label type="button" class="btn btn-primary">EXEC</label>
+                                        <label type="button" class="btn btn-primary">EXISTS</label>
+                                        <label type="button" class="btn btn-primary">FROM</label>
+                                        <label type="button" class="btn btn-primary">GROUP BY</label>
+                                        <label type="button" class="btn btn-primary">HAVING</label>
+                                        <label type="button" class="btn btn-primary">IN</label>
+                                        <label type="button" class="btn btn-primary">INNER JOIN</label>
 
-                                <label type="button" class="btn btn-primary">DELETE FROM table_name</label>
-                                <label type="button" class="btn btn-primary">ALL</label>
-                                <label type="button" class="btn btn-primary">AND</label>
-                                <label type="button" class="btn btn-primary">AS</label>
-                                <label type="button" class="btn btn-primary">ASC</label>
-                                <label type="button" class="btn btn-primary">BETWEEN</label>
-                                <label type="button" class="btn btn-primary">DESC</label>
-                                <label type="button" class="btn btn-primary">DISTINCT</label>
-                                <label type="button" class="btn btn-primary">EXEC</label>
-                                <label type="button" class="btn btn-primary">EXISTS</label>
-                                <label type="button" class="btn btn-primary">FROM</label>
-                                <label type="button" class="btn btn-primary">GROUP BY</label>
-                                <label type="button" class="btn btn-primary">HAVING</label>
-                                <label type="button" class="btn btn-primary">IN</label>
-                                <label type="button" class="btn btn-primary">INNER JOIN</label>
-
-                                <label type="button" class="btn btn-primary">IS NULL</label>
-                                <label type="button" class="btn btn-primary">IS NOT NULL</label>
-                                <label type="button" class="btn btn-primary">JOIN</label>
-                                <label type="button" class="btn btn-primary">LEFT JOIN</label>
-                                <label type="button" class="btn btn-primary">LIKE</label>
-                                <label type="button" class="btn btn-primary">NOT</label>
-                                <label type="button" class="btn btn-primary">NOT NULL</label>
-                                <label type="button" class="btn btn-primary">OR</label>
-                                <label type="button" class="btn btn-primary">ORDER BY</label>
-                                <label type="button" class="btn btn-primary">OUTER JOIN</label>
-                                <label type="button" class="btn btn-primary">RIGTH JOIN</label>
-                                <label type="button" class="btn btn-primary">UNION</label>
-                                <label type="button" class="btn btn-primary">VALUES</label>
-                                <label type="button" class="btn btn-primary">WHERE</label>
-                                <label type="button" class="btn btn-primary">*</label>
+                                        <label type="button" class="btn btn-primary">IS NULL</label>
+                                        <label type="button" class="btn btn-primary">IS NOT NULL</label>
+                                        <label type="button" class="btn btn-primary">JOIN</label>
+                                        <label type="button" class="btn btn-primary">LEFT JOIN</label>
+                                        <label type="button" class="btn btn-primary">LIKE</label>
+                                        <label type="button" class="btn btn-primary">NOT</label>
+                                        <label type="button" class="btn btn-primary">NOT NULL</label>
+                                        <label type="button" class="btn btn-primary">OR</label>
+                                        <label type="button" class="btn btn-primary">ORDER BY</label>
+                                        <label type="button" class="btn btn-primary">OUTER JOIN</label>
+                                        <label type="button" class="btn btn-primary">RIGTH JOIN</label>
+                                        <label type="button" class="btn btn-primary">UNION</label>
+                                        <label type="button" class="btn btn-primary">VALUES</label>
+                                        <label type="button" class="btn btn-primary">WHERE</label>
+                                        <label type="button" class="btn btn-primary">*</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -179,10 +187,9 @@
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>Version</b> 0.1.0
+                <b>Verzió:</b> 0.1.0
             </div>
-            <strong>Copyright &copy; 2019 <a href="#">Lovas Bálint</a>.</strong> All rights
-            reserved.
+            <strong>Készítette: <a href="#">Lovas Bálint</a>.</strong>  &copy; @DateTime.Now.Year
         </footer>
 
     </div>
