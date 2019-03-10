@@ -2,6 +2,11 @@
     margin-left: 0!important;
 }
 
+div#sqlExpressions.container-fluid,
+div#sqlKeywords.container-fluid {
+    padding-bottom: 10px !important;
+}
+
 #sqlExpressions label,
 #sqlKeywords label {
     margin-top: 5px;
